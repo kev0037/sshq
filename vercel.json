@@ -5,6 +5,7 @@
     { "source": "/timestamp", "destination": "/timestamp/index.html" },
     { "source": "/ip", "destination": "/ip/index.html" },
     { "source": "/webhook", "destination": "/webhook/index.html" },
+    { "source": "/fakemsg", "destination": "/fakemsg/index.html" },
     { "source": "/colorpicker", "destination": "/colorpicker/index.html" }
   ]
 }

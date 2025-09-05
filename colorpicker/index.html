@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hex Color Picker</title>
+  <style>
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    header {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    .card {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      width: 400px;
+      max-width: 95%;
+      overflow: hidden;
+    }
+    .preview {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .preview small {
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #aaa;
+    }
+    .controls {
+      padding: 16px;
+      border-top: 1px solid #333;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    input[type="color"] {
+      flex: 1;
+      height: 40px;
+      border: 2px solid #333;
+      border-radius: 6px;
+      background: #1e1e1e;
+      cursor: pointer;
+    }
+    button.pick {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #e0e0e0;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    button.pick:hover {
+      background: #2196f3;
+      border-color: #2196f3;
+      color: #fff;
+      box-shadow: 0 0 10px #2196f3;
+    }
+  </style>
+</head>
+<body>
+  <header>Hex Color Picker</header>
+
+  <div class="card">
+    <div id="preview" class="preview" style="background:#5865F2;">
+      <div id="hexHeader">#5865F2</div>
+      <small id="nameHeader">≈ Default Blurple</small>
+    </div>
+    <div class="controls">
+      <input type="color" id="picker" value="#5865F2">
+      <button id="eyeBtn" class="pick">Pick from Screen</button>
+    </div>
+  </div>
+
+  <script>
+    const picker = document.getElementById("picker");
+    const preview = document.getElementById("preview");
+    const hexHeader = document.getElementById("hexHeader");
+    const nameHeader = document.getElementById("nameHeader");
+
+    function update(hex) {
+      preview.style.background = hex;
+      hexHeader.textContent = hex.toUpperCase();
+      fetch(`https://www.thecolorapi.com/id?hex=${hex.replace('#','')}`)
+        .then(res => res.json())
+        .then(data => {
+          nameHeader.textContent = "≈ " + data.name.value;
+        })
+        .catch(() => {
+          nameHeader.textContent = "≈ Unknown";
+        });
+    }
+
+    picker.addEventListener("input", e => update(e.target.value));
+
+    const eyeBtn = document.getElementById("eyeBtn");
+    if ("EyeDropper" in window) {
+      eyeBtn.addEventListener("click", async () => {
+        try {
+          const ed = new EyeDropper();
+          const result = await ed.open();
+          picker.value = result.sRGBHex;
+          update(result.sRGBHex);
+        } catch (e) {}
+      });
+    } else {
+      eyeBtn.disabled = true;
+      eyeBtn.textContent = "Not Supported";
+    }
+
+    update("#5865F2");
+  </script>
+</body>
+</html>

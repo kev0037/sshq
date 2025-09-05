@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Message Creator</title>
+  <style>
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    header {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    input, textarea {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      width: 260px;
+    }
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+    button {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+    button:hover {
+      background: #2196f3;
+      border-color: #2196f3;
+      color: #fff;
+      box-shadow: 0 0 10px #2196f3;
+    }
+    .chat {
+      margin-top: 30px;
+      border: 1px solid #333;
+      padding: 20px;
+      width: 500px;
+      max-width: 90%;
+      background: #1e1e1e;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      text-align: left;
+      min-height: 200px;
+      overflow-y: auto;
+    }
+    .message {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .message-content {
+      flex-grow: 1;
+    }
+    .username {
+      font-weight: bold;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .timestamp {
+      color: #888;
+      font-size: 0.75rem;
+      margin-left: 5px;
+    }
+    .text {
+      white-space: pre-wrap; /* allows multi-line */
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <header>Fake Message Creator</header>
+
+  <div>
+    <input type="text" id="username" placeholder="Username">
+    <br>
+    <input type="text" id="avatar" placeholder="Avatar URL (optional)">
+    <br>
+    <textarea id="message" placeholder="Enter message"></textarea>
+    <br>
+    <button onclick="addMessage()">Add Message</button>
+    <button onclick="clearChat()">Clear All</button>
+  </div>
+
+  <div class="chat" id="chat-box"></div>
+
+  <script>
+    function getTimestamp() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const hour12 = hours % 12 || 12;
+      return `Today at ${hour12}:${minutes} ${ampm}`;
+    }
+
+    function addMessage() {
+      const username = document.getElementById("username").value.trim() || "User";
+      const avatar = document.getElementById("avatar").value.trim() || "https://cdn.discordapp.com/embed/avatars/0.png";
+      const message = document.getElementById("message").value.trim();
+
+      if (!message) return;
+
+      const chatBox = document.getElementById("chat-box");
+
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message";
+
+      const img = document.createElement("img");
+      img.src = avatar;
+      img.className = "avatar";
+
+      const content = document.createElement("div");
+      content.className = "message-content";
+
+      const header = document.createElement("div");
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "username";
+      nameSpan.textContent = username;
+
+      const timeSpan = document.createElement("span");
+      timeSpan.className = "timestamp";
+      timeSpan.textContent = getTimestamp();
+
+      header.appendChild(nameSpan);
+      header.appendChild(timeSpan);
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "text";
+      textDiv.textContent = message;
+
+      content.appendChild(header);
+      content.appendChild(textDiv);
+
+      msgDiv.appendChild(img);
+      msgDiv.appendChild(content);
+
+      chatBox.appendChild(msgDiv);
+
+      document.getElementById("message").value = "";
+    }
+
+    function clearChat() {
+      document.getElementById("chat-box").innerHTML = "";
+    }
+  </script>
+</body>
+</html>

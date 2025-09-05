@@ -44,10 +44,10 @@
 <body>
   <div class="container">
     <header>Discord Vanity Checker</header>
-    <input type="text" id="vanityInput" placeholder="Enter vanity (e.g. coolname)"><br>
+    <input type="text" id="vanityInput" placeholder="Enter vanity "><br>
     <button onclick="checkVanity()">Check</button>
     <div id="vanityError" class="error-message"></div>
-    <div id="vanityLoading" class="loading-message">⏳ Checking vanity...</div>
+    <div id="vanityLoading" class="loading-message"> Checking vanity...</div>
     <div id="vanityResult" class="result-box"></div>
   </div>
   <script>
@@ -65,7 +65,7 @@
         const data = await res.json();
         loadingBox.style.display = "none";
         resultBox.innerHTML = `
-          ✅ Found!<br>
+          Valid Vanity!<br>
           <b>Server:</b> ${data.guild?.name || "Unknown"}<br>
           <b>Members:</b> ${data.approximate_member_count || "—"}
         `;

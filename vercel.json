@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/vanity", "destination": "/vanity/index.html" },
-    { "source": "/timestamp", "destination": "/timestamp/index.html" }
+    { "source": "/timestamp", "destination": "/timestamp/index.html" },
+    { "source": "/webhook", "destination": "/webhook/index.html" }
   ]
 }

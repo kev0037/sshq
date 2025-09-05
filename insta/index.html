@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram User Info</title>
+  <style>
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    input {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      width: 250px;
+    }
+    button {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #2196f3;
+      border-color: #2196f3;
+    }
+    .card {
+      margin-top: 30px;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      border: 1px solid #333;
+    }
+    img {
+      width: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Instagram User Info</h1>
+  <input type="text" id="username" placeholder="Enter username">
+  <button onclick="getUserInfo()">Lookup</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function getUserInfo() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) return alert("Enter a username!");
+
+      const res = await fetch(`/api/instagram?username=${username}`);
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById("result").innerHTML = `<p style="color:red">${data.error}</p>`;
+        return;
+      }
+
+      document.getElementById("result").innerHTML = `
+        <div class="card">
+          <img src="${data.pfp}" alt="Profile Picture">
+          <h2>${data.full_name} (@${data.username}) ${data.verified ? "✔️" : ""}</h2>
+          <p>${data.bio || "No bio"}</p>
+          <p><strong>Followers:</strong> ${data.followers}</p>
+          <p><strong>Following:</strong> ${data.following}</p>
+          <p><strong>Posts:</strong> ${data.posts}</p>
+          <p><strong>Private:</strong> ${data.private ? "Yes" : "No"}</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

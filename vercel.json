@@ -4,7 +4,6 @@
     { "source": "/vanity", "destination": "/vanity/index.html" },
     { "source": "/timestamp", "destination": "/timestamp/index.html" },
     { "source": "/ip", "destination": "/ip/index.html" },
-    { "source": "/webhook", "destination": "/webhook/index.html" },
-    { "source": "/.*", "destination": "/index.html" }
+    { "source": "/webhook", "destination": "/webhook/index.html" }
   ]
 }

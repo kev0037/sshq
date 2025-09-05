@@ -1,7 +1,10 @@
 {
-  "rewrites": [
-    { "source": "/vanity", "destination": "/vanity/index.html" },
-    { "source": "/timestamp", "destination": "/timestamp/index.html" },
-    { "source": "/webhook", "destination": "/webhook/index.html" }
+  "version": 2,
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/vanity", "dest": "/index.html" },
+    { "src": "/timestamp", "dest": "/index.html" },
+    { "src": "/ip", "dest": "/index.html" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }

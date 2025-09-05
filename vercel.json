@@ -7,7 +7,6 @@
     { "source": "/webhook", "destination": "/webhook/index.html" },
     { "source": "/fakemsg", "destination": "/fakemsg/index.html" },
     { "source": "/userid", "destination": "/userid/index.html" },
-    { "source": "/robloxinfo", "destination": "/robloxinfo/index.html" },
     { "source": "/colorpicker", "destination": "/colorpicker/index.html" }
   ]
 }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord Webhook Sender</title>
+  <style>
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    header {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    input, textarea {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 5px;
+      font-size: 1rem;
+      width: 250px;
+    }
+    button {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #2196f3;
+      border-color: #2196f3;
+    }
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+    }
+    .success {
+      background: #2a2a2a;
+      color: #4caf50;
+      border: 1px solid #4caf50;
+    }
+    .error {
+      background: #2a2a2a;
+      color: #ff5252;
+      border: 1px solid #ff5252;
+    }
+  </style>
+</head>
+<body>
+  <header>Discord Webhook Sender</header>
+
+  <input type="text" id="url" placeholder="Webhook URL"><br>
+  <input type="text" id="username" placeholder="Username (optional)"><br>
+  <input type="text" id="avatar" placeholder="Avatar URL (optional)"><br>
+  <textarea id="message" placeholder="Message..." rows="3"></textarea><br>
+
+  <button onclick="sendWebhook()">Send</button>
+
+  <div id="status" class="status"></div>
+
+  <script>
+    async function sendWebhook() {
+      const url = document.getElementById("url").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const avatar = document.getElementById("avatar").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const statusBox = document.getElementById("status");
+
+      statusBox.style.display = "none";
+
+      if (!url || !message) {
+        statusBox.textContent = "⚠️ Webhook URL and message are required.";
+        statusBox.className = "status error";
+        statusBox.style.display = "block";
+        return;
+      }
+
+      const payload = {
+        content: message,
+      };
+      if (username) payload.username = username;
+      if (avatar) payload.avatar_url = avatar;
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          statusBox.textContent = " Message sent successfully!";
+          statusBox.className = "status success";
+          statusBox.style.display = "block";
+        } else {
+          throw new Error("Failed to send (status " + res.status + ")");
+        }
+      } catch (err) {
+        statusBox.textContent = "❌ Error: " + err.message;
+        statusBox.className = "status error";
+        statusBox.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

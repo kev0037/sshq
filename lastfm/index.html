@@ -235,7 +235,7 @@
         document.getElementById("artist-link").href = trackInfo.track?.artist?.url || "#";
 
         document.getElementById("footer").textContent =
-          `Playcount: ${userPlaycount} ∙ Total Scrobbles: ${userData.user?.playcount || "—"} ∙ Album: ${album || "—"}${nowPlaying ? " ∙ ▶ Now Playing" : ""}`;
+          `Playcount: ${userPlaycount} ∙ Total Scrobbles: ${userData.user?.playcount || "—"} ∙ Album: ${album || "—"}${nowPlaying ? "" : ""}`;
 
         loadingBox.style.display = "none";
         embed.style.display = "block";

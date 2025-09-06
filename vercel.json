@@ -8,6 +8,7 @@
     { "source": "/fakemsg", "destination": "/fakemsg/index.html" },
     { "source": "/userid", "destination": "/userid/index.html" },
     { "source": "/lastfm", "destination": "/lastfm/index.html" },
+    { "source": "/numberlookup", "destination": "/numberlookup/index.html" },
     { "source": "/colorpicker", "destination": "/colorpicker/index.html" }
   ]
 }

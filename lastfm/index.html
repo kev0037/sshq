@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Last.fm Now Playing</title>
+  <style>
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    header {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    input {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px;
+      width: 260px;
+      font-size: 1rem;
+      outline: none;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 10px 20px;
+      margin-top: 5px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: #2196f3;
+      border-color: #2196f3;
+      color: #fff;
+      box-shadow: 0 0 10px #2196f3;
+    }
+    .embed {
+      margin-top: 30px;
+      border: 1px solid #333;
+      padding: 20px;
+      width: 500px;
+      max-width: 90%;
+      text-align: left;
+      display: none;
+      background: #1e1e1e;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      animation: fadeIn 0.5s ease forwards;
+      position: relative;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .embed-author {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .embed-author img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .embed-author a {
+      color: #2196f3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .embed-thumbnail {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .embed-fields {
+      display: flex;
+      gap: 20px;
+      margin: 10px 0;
+    }
+    .field {
+      flex: 1;
+    }
+    .field strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .field a {
+      color: #e0e0e0;
+      text-decoration: none;
+    }
+    .field a:hover {
+      color: #2196f3;
+    }
+    .embed-footer {
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #aaa;
+      border-top: 1px solid #333;
+      padding-top: 8px;
+    }
+    .error-message {
+      background: #2a2a2a;
+      color: #ff5252;
+      border: 1px solid #ff5252;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(255, 82, 82, 0.3);
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .loading-message {
+      background: #2a2a2a;
+      color: #2196f3;
+      border: 1px solid #2196f3;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <header> Last.fm Now Playing</header>
+  
+  <div>
+    <input type="text" id="username" placeholder="Enter Last.fm username">
+    <br>
+    <button onclick="fetchNowPlaying()">Lookup</button>
+  </div>
+
+  <div id="error-box" class="error-message"></div>
+  <div id="loading-box" class="loading-message"> Fetching track info...</div>
+
+  <div id="embed" class="embed">
+    <div class="embed-author">
+      <img id="author-icon" src="" alt="pfp">
+      <a id="author-name" href="#" target="_blank"></a>
+    </div>
+    <img id="thumbnail" class="embed-thumbnail" src="" alt="thumbnail">
+    <div class="embed-fields">
+      <div class="field">
+        <strong>Track</strong>
+        <a id="track-link" target="_blank"></a>
+      </div>
+      <div class="field">
+        <strong>Artist</strong>
+        <a id="artist-link" target="_blank"></a>
+      </div>
+    </div>
+    <div class="embed-footer" id="footer"></div>
+  </div>
+
+  <script>
+    const API_KEY = "6182206853dcf843d52c8bb40132d9aa";
+
+    async function fetchNowPlaying() {
+      const user = document.getElementById("username").value.trim();
+      const errorBox = document.getElementById("error-box");
+      const loadingBox = document.getElementById("loading-box");
+      const embed = document.getElementById("embed");
+
+      errorBox.style.display = "none";
+      embed.style.display = "none";
+      loadingBox.style.display = "none";
+
+      if (!user) {
+        errorBox.textContent = "⚠️ Please enter a username.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      loadingBox.style.display = "block";
+
+      try {
+        // Get recent track
+        const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${API_KEY}&format=json&limit=1`);
+        const data = await res.json();
+        if (!data.recenttracks?.track?.length) throw new Error("No tracks found.");
+
+        const track = data.recenttracks.track[0];
+        const artist = track.artist["#text"];
+        const trackName = track.name;
+        const album = track.album["#text"];
+        const image = track.image.pop()["#text"] || "";
+        const nowPlaying = track["@attr"]?.nowplaying === "true";
+
+        // Track info
+        const trackInfoRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=${API_KEY}&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(trackName)}&username=${user}&format=json`);
+        const trackInfo = await trackInfoRes.json();
+        const userPlaycount = trackInfo.track?.userplaycount || 0;
+
+        // User info
+        const userRes = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${user}&api_key=${API_KEY}&format=json`);
+        const userData = await userRes.json();
+
+        // Fill embed
+        document.getElementById("author-icon").src = userData.user?.image?.[1]["#text"] || "";
+        document.getElementById("author-name").textContent = `Last.fm: ${user}`;
+        document.getElementById("author-name").href = userData.user?.url || "#";
+
+        document.getElementById("thumbnail").src = image;
+
+        document.getElementById("track-link").textContent = trackName;
+        document.getElementById("track-link").href = trackInfo.track?.url || "#";
+
+        document.getElementById("artist-link").textContent = artist;
+        document.getElementById("artist-link").href = trackInfo.track?.artist?.url || "#";
+
+        document.getElementById("footer").textContent =
+          `Playcount: ${userPlaycount} ∙ Total Scrobbles: ${userData.user?.playcount || "—"} ∙ Album: ${album || "—"}${nowPlaying ? " ∙ ▶ Now Playing" : ""}`;
+
+        loadingBox.style.display = "none";
+        embed.style.display = "block";
+      } catch (err) {
+        loadingBox.style.display = "none";
+        errorBox.textContent = "❌ " + err.message;
+        errorBox.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

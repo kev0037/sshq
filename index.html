@@ -68,71 +68,127 @@
       color: #fff;
       box-shadow: 0 0 10px #2196f3;
     }
+    /* Pagination buttons */
+    .pagination {
+      margin-top: 25px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .page-btn {
+      background: #1e1e1e;
+      border: 2px solid #333;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .page-btn:hover {
+      background: #2196f3;
+      border-color: #2196f3;
+      box-shadow: 0 0 10px #2196f3;
+    }
+    .page-btn.active {
+      background: #2196f3;
+      border-color: #2196f3;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: grid;
+    }
+    /* Placeholder (empty card to keep layout consistent) */
+    .placeholder {
+      visibility: hidden;
+    }
   </style>
 </head>
 <body>
   <header>Tools Hub</header>
 
-  <div class="tools-grid">
+  <!-- Page 1 -->
+  <div class="tools-grid page active" id="page1">
     <div class="tool-card">
       <div class="tool-title">UserID Lookup</div>
       <div class="tool-desc">Lookup info about an userid.</div>
       <a href="/userid" class="tool-btn">Go</a>
     </div>
-
     <div class="tool-card">
       <div class="tool-title">Vanity Lookup</div>
       <div class="tool-desc">Check Discord server vanities.</div>
       <a href="/vanity" class="tool-btn">Go</a>
     </div>
-
     <div class="tool-card">
       <div class="tool-title">Timestamp Generator</div>
       <div class="tool-desc">Generate Discord timestamps.</div>
       <a href="/timestamp" class="tool-btn">Go</a>
     </div>
-
     <div class="tool-card">
       <div class="tool-title">IP Info</div>
       <div class="tool-desc">See your IP address and other info.</div>
       <a href="/ip" class="tool-btn">Go</a>
     </div>
-
     <div class="tool-card">
       <div class="tool-title">Webhook Sender</div>
       <div class="tool-desc">Send messages via webhooks.</div>
       <a href="/webhook" class="tool-btn">Go</a>
     </div>
-
     <div class="tool-card">
       <div class="tool-title">Fake Message</div>
       <div class="tool-desc">Generate fake Discord messages.</div>
       <a href="/fakemsg" class="tool-btn">Go</a>
     </div>
-
     <div class="tool-card">
       <div class="tool-title">Color Picker</div>
       <div class="tool-desc">Pick colors and get HEX codes with names.</div>
       <a href="/colorpicker" class="tool-btn">Go</a>
     </div>
-
-      <div class="tool-card">
+    <div class="tool-card">
       <div class="tool-title">Last.fm Now Playing</div>
       <div class="tool-desc">Shows the currently playing track of the user.</div>
       <a href="/lastfm" class="tool-btn">Go</a>
     </div>
-    
-      <div class="tool-card">
+    <div class="tool-card">
       <div class="tool-title">Number Lookup</div>
       <div class="tool-desc">Provides info about the phone number.</div>
       <a href="/numberlookup" class="tool-btn">Go</a>
     </div>
+  </div>
 
-      <div class="tool-card">
+  <!-- Page 2 -->
+  <div class="tools-grid page" id="page2">
+    <div class="tool-card">
       <div class="tool-title">Message Sender</div>
-      <div class="tool-desc">Send messages in a custom channel using discords api (Supports File Spamming).</div>
+      <div class="tool-desc">Send messages in a custom channel using Discord's API (Supports File Spamming).</div>
       <a href="/msgsender" class="tool-btn">Go</a>
     </div>
+    <!-- Fill grid with invisible placeholders to keep size same -->
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
+    <div class="tool-card placeholder"></div>
   </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button class="page-btn active" onclick="showPage(1)">1</button>
+    <button class="page-btn" onclick="showPage(2)">2</button>
+  </div>
+
+  <script>
+    function showPage(pageNumber) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page' + pageNumber).classList.add('active');
+
+      document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector('.page-btn:nth-child(' + pageNumber + ')').classList.add('active');
+    }
+  </script>
 </body>
 </html>

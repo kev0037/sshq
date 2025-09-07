@@ -14,7 +14,16 @@ document.addEventListener("keydown", function (e) {
         (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") || // Ctrl+Shift+I
         (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j")    // Ctrl+Shift+J
     ) {
-        alert("Stop skidding dude!");
-        window.location.href = "about:blank"; // close/redirect page
+        // Show message
+        alert("no skidding kid!");
+
+        // Try to close the window
+        window.open("", "_self"); // some browsers require this
+        window.close();
+
+        // Fallback: make page unusable
+        document.body.innerHTML = "";
+        document.body.style.background = "#000";
+        document.body.style.height = "100vh";
     }
 });

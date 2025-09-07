@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/back.css">
+  <script src="/back.js" defer></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Arsenal Roblox</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --muted: #bbb;
+      --accent: #5865F2;
+      --widget-bg: #151515;
+      --widget-border: #2d2d2d;
+      --spotify-green: #1DB954;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .wrap {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card);
+      border: 1px solid #282828;
+      border-radius: 14px;
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-sizing: border-box;
+    }
+
+    .card h1 { margin: 0 0 12px 0; font-size: 1.6rem; color: #fff }
+    .card p { margin: 0 0 18px 0; color: var(--muted); line-height: 1.4 }
+
+    .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap }
+    .discord-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent); color: #fff; padding: 10px 18px; border-radius: 10px;
+      text-decoration: none; font-weight: 700; border: none; cursor: pointer;
+    }
+    .discord-btn img { width: 20px; height: 20px; filter: invert(1) }
+
+    /* widget */
+    .widget {
+      margin-top: 22px;
+      background: var(--widget-bg);
+      border: 1px solid var(--widget-border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    .top-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 74px;
+      height: 74px;
+      flex-shrink: 0;
+    }
+    .avatar {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background: #222;
+    }
+
+    .status-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #747f8d;
+      border: 2px solid var(--widget-bg);
+    }
+
+    .info { display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+    .displayname { font-weight: 700; font-size: 1.1rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+    .username { font-size: 0.9rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+    .activity { color: var(--muted); font-size: 0.95rem; min-height: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+
+    /* spotify */
+    .spotify {
+      margin-top: 6px;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 8px;
+      box-sizing: border-box;
+      background: linear-gradient(90deg, rgba(27, 187, 97, .14), rgba(27, 187, 97, .06));
+      border: 1px solid rgba(27,187,97,0.12);
+    }
+    .spotify-left {
+      flex: 0 0 auto;
+      width: 64px; height: 64px; border-radius: 8px; overflow: hidden; background: #111;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .spotify-left img { width: 100%; height: 100%; object-fit: cover; display: block }
+    .spotify-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+    .spotify-label { font-size: 0.75rem; font-weight: 700; color: var(--spotify-green); text-transform: uppercase; letter-spacing: 0.6px }
+    .song { font-weight: 700; color: #fff; font-size: 0.96rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100% }
+    .artist { font-size: 0.88rem; color: #e6e6e6; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+
+    @media (max-width:420px) {
+      .card { padding: 18px }
+      .top-row { gap: 10px }
+      .avatar-wrapper { width: 60px; height: 60px }
+      .avatar { width: 60px; height: 60px }
+      .displayname { font-size: 1rem }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main">
+      <h1>Arsenal Roblox Script</h1>
+      <p>Interested in purchasing this script?<br>DM me directly on Discord.</p>
+
+      <div class="actions">
+        <a class="discord-btn" href="https://discord.com/users/294116273955274752" target="_blank" rel="noopener">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="discord">
+          DM me
+        </a>
+      </div>
+
+      <!-- widget -->
+      <div id="widget" class="widget" aria-live="polite">
+        <div class="top-row">
+          <div class="avatar-wrapper">
+            <img id="avatar" class="avatar" src="" alt="avatar">
+            <div id="statusDot" class="status-dot" aria-hidden="true"></div>
+          </div>
+
+          <div class="info">
+            <div id="displayname" class="displayname">Loading...</div>
+            <div id="username" class="username"></div>
+            <div id="activity" class="activity"></div>
+          </div>
+        </div>
+
+        <div id="spotify" class="spotify" style="display:none">
+          <div class="spotify-left">
+            <img id="album" src="" alt="album art">
+          </div>
+          <div class="spotify-meta">
+            <div class="spotify-label">Now playing on Spotify</div>
+            <div id="song" class="song"></div>
+            <div id="artist" class="artist"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const USER_ID = "294116273955274752";
+    const STATUS_COLORS = {
+      online: "#43b581",
+      idle: "#faa61a",
+      dnd: "#f04747",
+      offline: "#747f8d"
+    };
+
+    function getActivityText(d) {
+      if (!d.activities || d.activities.length === 0) return "";
+      let act = d.activities.find(a => a.type === 4);
+      if (!act) act = d.activities.find(a => a.type === 1) || d.activities.find(a => a.type === 0) || d.activities.find(a => a.type === 2) || d.activities[0];
+      if (!act) return "";
+      switch (act.type) {
+        case 0: return " Playing " + act.name;
+        case 1: return " Streaming " + (act.details || act.name);
+        case 2: return " Listening to " + (act.details || act.name);
+        case 3: return " Watching " + act.name;
+        case 4: return act.state || act.name || "";
+        default: return act.name || "";
+      }
+    }
+
+    async function updateWidget() {
+      try {
+        const r = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
+        if (!r.ok) throw new Error("bad response");
+        const json = await r.json();
+        const d = json.data;
+        const user = d.discord_user || {};
+
+        const avatarUrl = user.avatar
+          ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
+          : `https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator) % 5}.png`;
+
+        document.getElementById("avatar").src = avatarUrl;
+        document.getElementById("displayname").textContent = user.global_name || user.username || "Unknown";
+        document.getElementById("username").textContent = user.username ? `@${user.username}` : "";
+
+        document.getElementById("activity").textContent = getActivityText(d);
+
+        const status = d.discord_status || "offline";
+        document.getElementById("statusDot").style.background = STATUS_COLORS[status] || STATUS_COLORS.offline;
+
+        if (d.spotify && d.spotify.song) {
+          document.getElementById("spotify").style.display = "flex";
+          document.getElementById("album").src = d.spotify.album_art_url || "";
+          document.getElementById("song").textContent = d.spotify.song || "";
+          document.getElementById("artist").textContent = d.spotify.artist || "";
+        } else {
+          document.getElementById("spotify").style.display = "none";
+        }
+      } catch (err) {
+        document.getElementById("displayname").textContent = "Unavailable";
+        document.getElementById("username").textContent = "";
+        document.getElementById("activity").textContent = "";
+        document.getElementById("spotify").style.display = "none";
+        document.getElementById("statusDot").style.background = STATUS_COLORS.offline;
+      }
+    }
+
+    updateWidget();
+    setInterval(updateWidget, 10000);
+  </script>
+</body>
+</html>
